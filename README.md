@@ -1,130 +1,140 @@
-# MiniTorrent
+# Mini-Torrent
 
-A minimal BitTorrent client implementation for educational purposes. This project was created as a college project to demonstrate core BitTorrent functionality.
+A simple peer-to-peer file sharing system inspired by BitTorrent. This project consists of two main components:
 
-## Features
+1. **Tracker**: A central server that keeps track of which peers have which files
+2. **Peer**: A client application that can both seed (share) and download files
 
-- **Create Torrent**: Generate `.torrent` files from a file or directory
-- **Seed**: Act as a seeder for a torrent file
-- **Download**: Download files from a torrent by connecting to seeders
+## System Architecture
+
+The system follows a simplified BitTorrent-like architecture:
+
+- **Tracker**: Maintains a registry of files and the peers that have them
+- **Peers**: Connect to the tracker to register files they're sharing or to find peers that have files they want to download
+- **File Transfer**: Direct peer-to-peer file transfer without tracker involvement
+
+## Improved Features
+
+This version includes several improvements over the basic implementation:
+
+1. **Enhanced Error Handling**: Detailed error messages and proper error codes
+2. **File Integrity Verification**: Checksum calculation and verification
+3. **Improved User Interface**: Better console UI with progress bars
+4. **Modular Code Structure**: Organized into reusable components
+5. **Cross-Platform Support**: Works on both Windows and POSIX systems
+6. **Graceful Shutdown**: Proper cleanup of resources on exit
+
+## Components
+
+### Tracker (tracker.cpp)
+
+The tracker is a central server that:
+- Listens on port 8000
+- Handles "REGISTER" requests from peers who want to share files
+- Handles "GETPEERS" requests from peers looking for files
+- Maintains a thread-safe registry of files and their associated peers
+
+### Peer (peer.cpp)
+
+The peer application can:
+- Seed files: Share files with other peers
+- Download files: Get files from other peers
+- Register with the tracker when seeding
+- Query the tracker to find peers with desired files
+- Verify file integrity using checksums
+
+## How to Use
+
+### Compiling the Project
+
+Using the provided Makefile:
+
+```bash
+# Compile both tracker and peer
+make
+
+# Compile only tracker
+make tracker
+
+# Compile only peer
+make peer
+
+# Clean build files
+make clean
+```
+
+Manual compilation:
+
+```bash
+# Compile the tracker
+g++ -o tracker tracker.cpp common.cpp network.cpp fileutils.cpp -std=c++11 -pthread
+
+# Compile the peer
+g++ -o peer peer.cpp common.cpp network.cpp fileutils.cpp -std=c++11 -pthread
+```
+
+### Running the Tracker
+
+```bash
+./tracker
+```
+
+The tracker will start listening on port 8000 and display log messages.
+
+### Running a Peer
+
+```bash
+./peer
+```
+
+The peer application will present a menu with options:
+
+1. **Seed a file**: Share a file with other peers
+   - You'll need to provide the file path and a port number to serve on
+   - The peer will register with the tracker and start listening for download requests
+   - File integrity is verified with checksums
+
+2. **Download a file**: Get a file from another peer
+   - You'll need to provide the filename to search for and a destination path
+   - The peer will query the tracker for available sources
+   - You can select which peer to download from
+   - Progress bar shows download status
+   - File integrity is verified after download
+
+3. **Exit**: Quit the application with proper cleanup
+
+## Technical Details
+
+- Written in C++ with standard networking libraries
+- Uses TCP sockets for reliable data transfer
+- Implements a simple protocol for tracker-peer communication
+- Supports concurrent connections with multi-threading
+- File transfers occur in chunks of 1024 bytes
+- Cross-platform socket handling (Windows/POSIX)
+- Logging system with different severity levels
+- Progress tracking for file transfers
+
+## Project Structure
+
+- **common.h/cpp**: Common utilities and definitions
+- **network.h/cpp**: Network communication utilities
+- **fileutils.h/cpp**: File handling utilities
+- **tracker.h/cpp**: Tracker implementation
+- **peer.h/cpp**: Peer implementation
+- **Makefile**: Build configuration
 
 ## Requirements
 
-- Python 3.6+
-- Dependencies (install with `pip install -r requirements.txt`):
-  - bencode.py
-  - cryptography
+- C++ compiler with C++11 support
+- pthread library (Linux/macOS)
+- Windows: Windows Sockets 2 library (ws2_32)
 
-## Installation
+## Future Improvements
 
-1. Clone this repository:
+Potential areas for further enhancement:
 
-   ```
-   git clone https://github.com/yourusername/minitorrent.git
-   cd minitorrent
-   ```
-
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-
-## Usage
-
-### Creating a Torrent
-
-```
-python minitorrent.py create <input_file_or_directory> <output_torrent_file> [options]
-```
-
-Options:
-
-- `-t, --tracker <tracker_url>`: Specify the tracker URL (default: http://example.tracker.com:6969/announce)
-- `-p, --piece-length <length>`: Specify piece length in bytes (default: 256KB)
-
-Example:
-
-```
-python minitorrent.py create myfile.mp4 myfile.torrent
-```
-
-### Seeding a Torrent
-
-```
-python minitorrent.py seed <torrent_file> <original_file_or_directory> [options]
-```
-
-Options:
-
-- `-p, --port <port>`: Port to listen on (default: 6881)
-
-Example:
-
-```
-python minitorrent.py seed myfile.torrent myfile.mp4
-```
-
-### Downloading a Torrent
-
-```
-python minitorrent.py download <torrent_file> <output_file_or_directory>
-```
-
-Example:
-
-```
-python minitorrent.py download myfile.torrent downloaded_myfile.mp4
-```
-
-## Architecture
-
-The client is split into several components:
-
-1. **Torrent Creator**: Handles creating `.torrent` files with appropriate metadata
-2. **Seeder**: Listens for connections and serves file pieces to peers
-3. **Downloader**: Connects to seeders and downloads file pieces
-4. **Utilities**: Common functions for BitTorrent operations
-
-## Limitations
-
-This is a minimal implementation, so it has several limitations:
-
-- No DHT support (relies on tracker or manual peer specification)
-- Limited peer discovery (only connects to peers specified in code for demonstration)
-- No support for advanced BitTorrent features like fast resume, superseeding, etc.
-- Simple piece selection algorithm (sequential)
-- Basic error handling
-- Multi-file torrents have limited support
-
-## Testing
-
-To test the client, you can:
-
-1. Create a torrent for a file:
-
-   ```
-   python minitorrent.py create myfile.txt myfile.torrent
-   ```
-
-2. In one terminal, seed the torrent:
-
-   ```
-   python minitorrent.py seed myfile.torrent myfile.txt
-   ```
-
-3. In another terminal, download the torrent:
-   ```
-   python minitorrent.py download myfile.torrent downloaded_myfile.txt
-   ```
-
-## Contributing
-
-This project is meant for educational purposes. If you want to contribute:
-
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
-
-## License
-
-This project is released under the MIT License. See the LICENSE file for details.
+- Downloading from multiple peers simultaneously
+- More robust file integrity verification (SHA-256)
+- NAT traversal capabilities
+- Graphical user interface
+- Persistent storage for tracker data

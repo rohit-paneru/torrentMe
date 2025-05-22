@@ -1,4 +1,0 @@
-bencode.py>=4.0.0
-cryptography>=38.0.0,<40.0.0
-pyOpenSSL>=23.0.0
-tk==0.1.0 
