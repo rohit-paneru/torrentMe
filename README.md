@@ -15,7 +15,7 @@ The system follows a simplified BitTorrent-like architecture:
 
 ## Improved Features
 
-This version includes several improvements over the basic implementation:
+This version includes several improvements over the basic implementation in the project:
 
 1. **Enhanced Error Handling**: Detailed error messages and proper error codes
 2. **File Integrity Verification**: Checksum calculation and verification
@@ -24,7 +24,7 @@ This version includes several improvements over the basic implementation:
 5. **Cross-Platform Support**: Works on both Windows and POSIX systems
 6. **Graceful Shutdown**: Proper cleanup of resources on exit
 
-## Components
+## Components of Version
 
 ### Tracker (tracker.cpp)
 
@@ -89,7 +89,7 @@ The tracker will start listening on port 8000 and display log messages.
 
 The peer application will present a menu with options:
 
-1. **Seed a file**: Share a file with other peers
+1. **Seed a file**: Share a file with other peers to go ahead
    - You'll need to provide the file path and a port number to serve on
    - The peer will register with the tracker and start listening for download requests
    - File integrity is verified with checksums
@@ -131,7 +131,7 @@ The peer application will present a menu with options:
 
 ## Future Improvements
 
-Potential areas for further enhancement:
+Potential areas for further enhancement of project:
 
 - Downloading from multiple peers simultaneously
 - More robust file integrity verification (SHA-256)
