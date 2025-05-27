@@ -13,7 +13,7 @@ The system follows a simplified BitTorrent-like architecture:
 - **Peers**: Connect to the tracker to register files they're sharing or to find peers that have files they want to download
 - **File Transfer**: Direct peer-to-peer file transfer without tracker involvement
 
-## Improved Features
+## Improved Features xx
 
 This version includes several improvements over the basic implementation in the project:
 
