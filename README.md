@@ -5,7 +5,7 @@ A simple peer-to-peer file sharing system inspired by BitTorrent. This project c
 1. **Tracker**: A central server that keeps track of which peers have which files
 2. **Peer**: A client application that can both seed (share) and download files
 
-## System Architecture
+## System Architecture my name is
 
 The system follows a simplified BitTorrent-like architecture:
 
