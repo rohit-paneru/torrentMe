@@ -84,7 +84,7 @@ public:
         DEBUG,
         INFO,
         WARNING,
-        ERROR,
+        LOG_ERROR,  // Changed from ERROR to avoid Windows macro conflict
         FATAL
     };
 

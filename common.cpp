@@ -96,7 +96,7 @@ void Logger::log(LogLevel level, const std::string& message) {
         case DEBUG:   levelStr = "DEBUG"; break;
         case INFO:    levelStr = "INFO"; break;
         case WARNING: levelStr = "WARNING"; break;
-        case ERROR:   levelStr = "ERROR"; break;
+        case LOG_ERROR:   levelStr = "ERROR"; break;
         case FATAL:   levelStr = "FATAL"; break;
     }
 
@@ -121,7 +121,7 @@ void Logger::warning(const std::string& message) {
 }
 
 void Logger::error(const std::string& message) {
-    log(ERROR, message);
+    log(LOG_ERROR, message);
 }
 
 void Logger::fatal(const std::string& message) {
