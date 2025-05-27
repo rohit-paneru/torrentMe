@@ -41,7 +41,7 @@ $(PEER_TARGET): $(PEER_OBJS)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Clean
+# Clean #edited by manas
 clean:
 	$(RM) *.o $(TRACKER_TARGET) $(PEER_TARGET)
 
